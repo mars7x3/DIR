@@ -18,6 +18,7 @@
 
 
                             {% for i in results %}
+               
                             <article class="blog_item">
                                 <div class="blog_item_img">
                                     <a href="{% url 'resume' i.pk %}"><img class="card-img rounded-0" src="{{ i.image.url }}" alt="Здесь фото"></a>
@@ -25,19 +26,30 @@
                                         <h3>{{ i.price }}c</h3>
                                     </a>
                                 </div>
+
+                                <form action="{% url 'cart_add' i.id %}" method="post" >
+                                    {{ cart_product_form }}
+                                    {% csrf_token %}
+                                    <div class="blog_button">
+                                        <button type="submit">В избранное</button>
+                                    </div>
+                                </form>
+
                                 <div class="blog_details">
                                     <a class="d-inline-block" href="#">
 
                                         <a href="{% url 'resume' i.pk %}"><h2 class="blog-head" style="color: #2d2d2d;">{{ i.title }}</h2></a>
 
                                     </a>
-                                    <p>{{ i.description|truncatewords:15 }}</p>
                                     <ul class="blog-info-link">
                                         <li><a href="#"><i class="fa fa-user"></i> {{ i.name }}</a></li>
                                         <li><a href="#"><i class="fa fa-clock"></i>{{ i.create_time }}</a></li>
                                     </ul>
                                 </div>
+
+                         
                             </article>
+                      
 
                             {% endfor %}
 
@@ -61,6 +73,8 @@
                                     </li>
                                 </ul>
                             </nav>
+
+                            
                         </div>
                     </div>
                     <div class="col-lg-4">
@@ -96,9 +110,9 @@
                                         </a>
                                     </li>
 
-                                    {% for cat in category %}
+                                    {% for cat in categories %}
                                     <li>
-                                        <a href="#" class="d-flex">
+                                        <a href="{% url 'filter' cat.slug %}" class="d-flex">
                                             <p>{{ cat.name }}</p>
                                             <p>({{ cat.resume.all.count }})</p>
                                         </a>

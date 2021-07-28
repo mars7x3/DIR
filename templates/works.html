@@ -25,9 +25,13 @@
                                         <h3>{{ i.price }}c</h3>
                                     </a>
                                 </div>
-                                <div class="blog_button">
-                                    <button>В избранное</button>
-                                </div>
+                                <form action="{% url 'cart_add' i.id %}" method="post" >
+                                    {{ cart_product_form }}
+                                    {% csrf_token %}
+                                    <div class="blog_button">
+                                        <button type="submit">В избранное</button>
+                                    </div>
+                                </form>
                                 <div class="blog_details">
                                     <a class="d-inline-block" href="#">
 
@@ -95,15 +99,15 @@
                                         <a href="#" class="d-flex">
 
                                             <p>Все</p>
-                                            <p>({{ resumes.count }})</p>
+                                            <p>({{ resume_count }})</p>
                                         </a>
                                     </li>
 
-                                    {% for cat in resumes %}
+                                    {% for cat in categories %}
                                     <li>
-                                        <a href="#" class="d-flex">
-                                            <p>{{ cat.category }}</p>
-                                            <p>({{ cat.resume.category.all.count }})</p>
+                                        <a href="{% url 'filter' cat.slug %}" class="d-flex">
+                                            <p>{{ cat.name }}</p>
+                                            <p>({{ cat.resume.all.count }})</p>
                                         </a>
                                     </li>
                                     {% endfor %}

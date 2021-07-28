@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, request
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -49,6 +49,7 @@ class ResumeHome(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data()
         context['categories'] = Category.objects.all()
+        context['resume_count'] = Resume.objects.all().count()
         return context
 
     def get_queryset(self):
@@ -62,6 +63,8 @@ class WorkHome(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        context['resume_count'] = Resume.objects.all().count()
         return context
 
     def get_queryset(self):
@@ -113,6 +116,12 @@ class SearchListView(ListView):
     template_name = 'search.html'
     context_object_name = 'results'
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        context['resume_count'] = Resume.objects.all().count()
+        return context
+
     def get_queryset(self):
         queryset = super().get_queryset()
         q = self.request.GET.get('q')
@@ -153,8 +162,13 @@ def delete_comment(request, pk):
     return redirect(resume_id.get_absolut_url())
 
 
+class FilterHome(DetailView):
+    model = Category
+    template_name = 'filter.html'
+    context_object_name = 'category'
+    slug_url_kwarg = 'slug'
 
-
-
-
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['categories'] = self.model.objects.all()
+        return context

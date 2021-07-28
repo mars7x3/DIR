@@ -48,7 +48,7 @@
    </div>
    <div class="navigation-top">
      <div class="d-sm-flex justify-content-between text-center">
-      <p class="like-info"><span class="align-middle"><i class="fa fa-heart"></i></span> Нравится(10)</p>
+      <!-- <p class="like-info"><span class="align-middle"><i class="fa fa-heart"></i></span> Нравится(10)</p> -->
       <div class="col-sm-4 text-center my-2 my-sm-0">
       </div>
 
@@ -168,45 +168,25 @@
 </div>
 <div class="col-lg-4">
   <div class="blog_right_sidebar">
-   <aside class="single_sidebar_widget search_widget">
-    <form action="#">
-     <div class="form-group">
-      <div class="input-group mb-3">
-       <input type="text" class="form-control" placeholder='Search Keyword'
-       onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Keyword'">
-       <div class="input-group-append">
-        <button class="btns" type="button"><i class="ti-search"></i></button>
-      </div>
-    </div>
-  </div>
-  <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
-  type="submit">Search</button>
-</form>
-</aside>
-<aside class="single_sidebar_widget post_category_widget">
-  <h4 class="widget_title" style="color: #2d2d2d;">Category</h4>
-  <ul class="list cat-list">
-   <li>
-    <a href="#" class="d-flex">
-     <p>Resaurant food</p>
-     <p>(37)</p>
-   </a>
- </li>
- <li>
-  <a href="#" class="d-flex">
-   <p>Travel news</p>
-   <p>(10)</p>
- </a>
-</li>
-<li>
-  <a href="#" class="d-flex">
-   <p>Modern technology</p>
-   <p>(03)</p>
- </a>
-</li>
+    <aside class="single_sidebar_widget search_widget">
 
-</ul>
-</aside>
+
+      <form class="d-flex" method="get" action="{% url 'search' %}">
+          <div class="form-group">
+              <div class="input-group mb-3">
+                  <input name="q" type="search" class="form-control" placeholder='Search Keyword'
+                  onfocus="this.placeholder = ''"
+                  onblur="this.placeholder = 'Search Keyword'">
+                  <div class="input-group-append">
+                      <button class="btns" type="submit"><i class="ti-search"></i></button>
+                  </div>
+              </div>
+          </div>
+       
+      </form>
+
+
+  </aside>
 
 
 

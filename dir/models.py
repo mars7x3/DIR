@@ -33,7 +33,7 @@ class Resume(models.Model):
 
     user_id = models.ForeignKey(User, on_delete=models.CASCADE,
                                 related_name='user',
-                                verbose_name='Пользователь')
+                                verbose_name='Пользователь',)
     name = models.CharField(max_length=100, )
     phone = models.CharField(max_length=100, )
     title = models.CharField(max_length=300, )

@@ -25,9 +25,17 @@
                                         <h3 class="price_font">{{ i.price }}c</h3>
                                     </a>
                                 </div>
-                                <div class="blog_button">
-                                    <button>В избранное</button>
-                                </div>
+
+                                <form action="{% url 'cart_add' i.id %}" method="post" >
+                                    {{ cart_product_form }}
+                                    {% csrf_token %}
+                                    <div class="blog_button">
+                                        <button type="submit">В избранное</button>
+                                    </div>
+                                </form>
+
+                              
+
                                 <div class="blog_details blog_details1">
                                     <a class="d-inline-block" href="#">
 
@@ -44,7 +52,26 @@
             {% endfor %}
                             {% endfor %}
 
-                     
+                     <nav class="blog-pagination justify-content-center d-flex">
+                                <ul class="pagination">
+                                    <li class="page-item">
+                                        <a href="#" class="page-link" aria-label="Previous">
+                                            <i class="ti-angle-left"></i>
+                                        </a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a href="#" class="page-link">1</a>
+                                    </li>
+                                    <li class="page-item active">
+                                        <a href="#" class="page-link">2</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a href="#" class="page-link" aria-label="Next">
+                                            <i class="ti-angle-right"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
                           
                         </div>
                     </div>
@@ -83,7 +110,7 @@
 
                                     {% for cat in category %}
                                     <li>
-                                        <a href="#" class="d-flex">
+                                        <a href="{% url 'filter' cat.slug %}" class="d-flex">
                                             <p>{{ cat.name }}</p>
                                             <p>({{ cat.resume.all.count }})</p>
                                         </a>
