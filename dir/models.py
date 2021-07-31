@@ -23,8 +23,8 @@ class Category(models.Model):
 
 class Resume(models.Model):
     STATUS_RESUME = (
-        ('Найти работника', 'Найти работника'),
-        ('Найти работу', 'Найти работу'),
+        ('Надо сделать', 'Надо сделать'),
+        ('Могу сделать', 'Могу сделать'),
     )
     status = models.CharField(choices=STATUS_RESUME,
                               max_length=30,
@@ -34,20 +34,22 @@ class Resume(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE,
                                 related_name='user',
                                 verbose_name='Пользователь',)
-    name = models.CharField(max_length=100, )
-    phone = models.CharField(max_length=100, )
-    title = models.CharField(max_length=300, )
+    name = models.CharField(max_length=100, verbose_name='Имя')
+    phone = models.CharField(max_length=100, verbose_name="Телефон")
+    title = models.CharField(max_length=300, verbose_name="Название")
     category = models.ForeignKey(Category,
                                  on_delete=models.DO_NOTHING,
-                                 related_name='resume')
-    description = models.TextField()
-    price = models.PositiveIntegerField()
+                                 related_name='resume',
+                                 verbose_name="Категория")
+    description = models.TextField(verbose_name="Описание")
+    price = models.PositiveIntegerField(verbose_name="Цена")
     create_time = models.DateTimeField(auto_now_add=True,
                                        verbose_name='Время создания')
 
     image = models.ImageField(upload_to='products',
-                              verbose_name='Изображение',)
-    address = models.CharField(max_length=300, )
+                              verbose_name='Изображение',
+                              default='products/def_image.png')
+    address = models.CharField(max_length=300, verbose_name="Адрес")
 
     def get_absolut_url(self):
         from django.urls import reverse

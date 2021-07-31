@@ -47,6 +47,8 @@ class Profile(ListView):
     template_name = 'account/profile.html'
     context_object_name = 'resumes'
 
+    paginate_by = 20
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         return context

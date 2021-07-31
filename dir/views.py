@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect, request
 
 from django.shortcuts import render, redirect, get_object_or_404
@@ -17,6 +18,7 @@ class CategoryListView(ListView):
     model = Category
     template_name = 'obyavleniya.html'
     context_object_name = 'category'
+    paginate_by = 20
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data()
@@ -29,6 +31,7 @@ class ResumeDetailView(DetailView):
     template_name = 'detail.html'
     context_object_name = 'resume'
     pk_url_kwarg = 'resume_id'
+
 
     def recommendation(self):
         resumes = Resume.objects.filter(category=self.object.category)
@@ -45,6 +48,7 @@ class ResumeHome(ListView):
     model = Resume
     template_name = 'resume.html'
     context_object_name = 'resumes'
+    paginate_by = 20
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data()
@@ -53,13 +57,14 @@ class ResumeHome(ListView):
         return context
 
     def get_queryset(self):
-        return Resume.objects.filter(status='Найти работу')
+        return Resume.objects.filter(status='Могу сделать')
 
 
 class WorkHome(ListView):
     model = Resume
     template_name = 'works.html'
     context_object_name = 'resumes'
+    paginate_by = 20
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -68,7 +73,7 @@ class WorkHome(ListView):
         return context
 
     def get_queryset(self):
-        return Resume.objects.filter(status='Найти работника')
+        return Resume.objects.filter(status='Надо сделать')
 
 
 @login_required(login_url='login')
@@ -76,6 +81,8 @@ def add_resume(request):
     if request.method == 'POST':
         form = AddResumeForm(request.POST, request.FILES)
         if form.is_valid():
+            form = form.save(commit=False)
+            form.user_id = request.user
             form.save()
             return redirect('profile')
     else:
@@ -115,6 +122,7 @@ class SearchListView(ListView):
     model = Resume
     template_name = 'search.html'
     context_object_name = 'results'
+    paginate_by = 20
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -170,5 +178,17 @@ class FilterHome(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
+        activities = self.get_related_activities()
         context['categories'] = self.model.objects.all()
+        context['resumes'] = activities
+        context['page_obj'] = activities
+        context['slug'] = self.kwargs['slug']
+        context['resume_count'] = Resume.objects.all().count()
         return context
+
+    def get_related_activities(self):
+        queryset = self.object.resume.all()
+        paginator = Paginator(queryset, 2)  # paginate_by
+        page = self.request.GET.get('page')
+        activities = paginator.get_page(page)
+        return activities

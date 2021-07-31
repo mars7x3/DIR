@@ -6,7 +6,7 @@ from dir.models import Resume, Review
 class AddResumeForm(forms.ModelForm):
     class Meta:
         model = Resume
-        fields = ['status', 'user_id', 'category', 'title', 'price',
+        fields = ['status', 'category', 'title', 'price',
                   'description', 'phone', 'name', 'image', 'address']
 
 

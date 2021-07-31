@@ -48,24 +48,26 @@
 
                             {% endfor %}
 
-                            <nav class="blog-pagination justify-content-center d-flex">
+                           <nav class="blog-pagination justify-content-center d-flex">
                                 <ul class="pagination">
+                                    {% if page_obj.has_previous %}
                                     <li class="page-item">
-                                        <a href="#" class="page-link" aria-label="Previous">
+                                        <a href="{% url 'home' %}?page={{ page_obj.previous_page_number }}" class="page-link" aria-label="Previous">
                                             <i class="ti-angle-left"></i>
                                         </a>
                                     </li>
-                                    <li class="page-item">
-                                        <a href="#" class="page-link">1</a>
-                                    </li>
+                                    {% endif %}
+
                                     <li class="page-item active">
-                                        <a href="#" class="page-link">2</a>
+                                        <a href="#" class="page-link">{{ page_obj.number }}</a>
                                     </li>
+                                    {% if page_obj.has_next %}
                                     <li class="page-item">
-                                        <a href="#" class="page-link" aria-label="Next">
+                                        <a href="{% url 'home' %}?page={{ page_obj.next_page_number }}" class="page-link" aria-label="Next">
                                             <i class="ti-angle-right"></i>
                                         </a>
                                     </li>
+                                    {% endif %}
                                 </ul>
                             </nav>
                         </div>
@@ -96,7 +98,7 @@
                                 <ul class="list cat-list">
 
                                     <li>
-                                        <a href="#" class="d-flex">
+                                        <a href="{% url 'home' %}" class="d-flex">
 
                                             <p>Все</p>
                                             <p>({{ resume_count }})</p>

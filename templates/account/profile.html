@@ -34,7 +34,7 @@
                                         <a href="{% url 'resume' i.pk %}"><h2 class="blog-head" style="color: #2d2d2d;">{{ i.title }}</h2></a>
 
                                     </a>
-                                    <p>{{ i.description|truncatewords:15 }}</p>
+<!--                                    <p>{{ i.description|truncatewords:15 }}</p>-->
                                     <ul class="blog-info-link">
                                         <li><a href="#"><i class="fa fa-user"></i> {{ i.name }}</a></li>
                                         <li><a href="#"><i class="fa fa-clock"></i>{{ i.create_time }}</a></li>
@@ -49,24 +49,26 @@
                             {% endif %}
                             {% endfor %}
 
-                            <nav class="blog-pagination justify-content-center d-flex">
+                           <nav class="blog-pagination justify-content-center d-flex">
                                 <ul class="pagination">
+                                    {% if page_obj.has_previous %}
                                     <li class="page-item">
-                                        <a href="#" class="page-link" aria-label="Previous">
+                                        <a href="{% url 'home' %}?page={{ page_obj.previous_page_number }}" class="page-link" aria-label="Previous">
                                             <i class="ti-angle-left"></i>
                                         </a>
                                     </li>
-                                    <li class="page-item">
-                                        <a href="#" class="page-link">1</a>
-                                    </li>
+                                    {% endif %}
+
                                     <li class="page-item active">
-                                        <a href="#" class="page-link">2</a>
+                                        <a href="#" class="page-link">{{ page_obj.number }}</a>
                                     </li>
+                                    {% if page_obj.has_next %}
                                     <li class="page-item">
-                                        <a href="#" class="page-link" aria-label="Next">
+                                        <a href="{% url 'home' %}?page={{ page_obj.next_page_number }}" class="page-link" aria-label="Next">
                                             <i class="ti-angle-right"></i>
                                         </a>
                                     </li>
+                                    {% endif %}
                                 </ul>
                             </nav>
                         </div>
